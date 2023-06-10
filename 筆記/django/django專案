@@ -25,5 +25,3 @@ DIRS': [BASE_DIR / 'templates'],
 LANGUAGE_CODE = 'zh-hant'
 
 
-
-

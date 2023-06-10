@@ -1,0 +1,92 @@
+全域安裝 Poetry 至家目錄
+curl -sSL https://install.python-poetry.org | python3 - --version 1.2.0 
+##--version 1.2.0 指定安裝的版本
+
+
+基本指令
+##初始化 Poetry 
+mkdir poetry-demo
+cd poetry-demo
+poetry init
+
+##此時會跳出一連串的互動對話，協助你建立專案的資料，大部分可以直接enter跳過
+##直到出現「Would you like to define your main dependencies interactively? (yes/no) [yes]」，我們先選擇「no」後，會讓你確認本次產生的toml檔內容
+##並詢問你「Do you confirm generation? (yes/no) [yes]」，按enter使用預設選項「yes」或直接回答「yes」，則pyproject.toml建立完成
+
+
+建立虛擬環境
+poetry env use python
+##poetry env use python建立虛擬環境所使用的 Python 版本，取決於python指令在你的「PATH」是連結到哪個版本。
+##你也可以將指令最後的python，改為python3或python3.8，甚至只需要3.8，只要它們確實存在於 PATH 中。
+
+##修改config，建立專案內的.venv虛擬環境
+##查看 Poetry 目前幾個主要的設定
+poetry config --list
+
+virtualenvs.create = true若改成false，則可以停止 Poetry 在「偵測不到虛擬環境時會自行建立」的行為模式，但建議還是不要更動
+
+
+修改的目標，使用指令
+poetry config virtualenvs.in-project true
+
+把之前建立的虛擬環境刪除
+poetry env remove python
+
+重新建立虛擬環境
+poetry env use python
+虛擬環境的路徑改為「專案的根目錄」。
+名稱固定為.venv
+
+啟動虛擬環境
+poetry shell
+
+退出虛擬環境
+exit
+
+poetry shell指令會偵測當前目錄或所屬上層目錄是否存在pyproject.toml來確定
+
+新增套件 等同pip安裝
+poetry add flask
+此時專案中的pyproject.toml也會發生變化
+
+
+有些套件，比如pytest、flake8等等，只會在開發環境中使用，產品的部署環境並不需要。
+poetry add black --dev
+
+Poetry 更新套件
+poetry update
+上面指令會更新全部「可能可以更新」的套件
+
+僅指定特定套件
+poetry update requests toml
+
+
+列出全部套件清單
+poetry show
+poetry show --tree
+
+只顯示「指定套件」
+poetry show celery --tree
+
+移除套件
+poetry remove flask
+poetry remove black --dev 開發區
+
+
+輸出 Poetry 虛擬環境的 requirements.txt 同等pip freeze > requirements.txt
+線上 輸出 dependencies
+poetry export -f requirements.txt -o requirements.txt --without-hashes
+
+開發區 輸出 dev-dependencies
+poetry export -f requirements.txt -o requirements.txt --without-hashes --dev
+
+
+Poetry 常用指令清單
+poetry add
+poetry remove
+poetry export
+poetry env use
+poetry shell
+poetry show
+poetry init
+poetry install

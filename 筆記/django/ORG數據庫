@@ -2,3 +2,16 @@ CharField  字符串
 DateTimeField  日期時間字段
 TextField  文本
 Biglntegerfield  64位整數
+
+
+email = models.TextField(null=False, blank=True, verbose_name='信箱')
+null=False 是在數據庫是否可以為空
+blank=True 是參數可以為空
+這樣設置後，該字段在數據庫層面不可為空，但在表單中可以為空
+
+
+存储容量：CharField 有一个最大长度限制，需要指定 max_length 参数，它将文本存储为固定长度的字符串。而 TextField 没有长度限制，可以存储任意长度的文本。
+
+存储形式：CharField 将文本存储为字符型字段，适用于较短的文本内容，例如名称、标题等。TextField 则将文本存储为文本型字段，适用于较长的文本内容，例如文章内容、备注等。
+
+知道字段的最大长度，并且文本内容不会超过该长度，可以使用 CharField。如果文本内容可能较长或长度不确定，可以使用 TextField。
