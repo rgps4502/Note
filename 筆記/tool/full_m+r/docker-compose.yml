@@ -78,6 +78,25 @@ services:
         max-size: 10m
         max-file: '3'
 
+  rabbitmq:
+    # 镜像及版本
+    image: rabbitmq:3.12.0
+    # 自定义容器名
+    container_name: rabbitmq
+    # docker启动时,自动启动该容器
+    restart: ${RESTART_POLICY}
+    # 挂载映射，可以让数据或配置持久化
+    ports:
+     # <本地端口> : <docker容器端口>
+     - 5672:5672
+     - 15672:15672
+         # 日誌配置
+    privileged: true
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: '3'
 
 networks:
   mysql-phpmyadmin:
