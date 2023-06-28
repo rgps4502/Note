@@ -1,0 +1,37 @@
+__str__()： 这个其实是Python的魔法方法，用于返回实例对象的打印字符串。为了让显示的内容更直观更易
+
+比如
+class Person(models.Model):
+    first_name = models.CharField(max_length=50)
+    last_name = models.CharField(max_length=50)
+    birth_date = models.DateField()
+
+    def __str__(self):
+        return self.first_name + self.last_name
+    
+
+`get_absolute_url(): 这个方法是返回每个模型实例的相应的访问url。
+
+__hash__()：
+
+实际上，Django在内部还为models.Model实现了__hash__()方法，给模型实例提供唯一的哈希值。
+
+这个方法的核心是hash(obj.pk)，通过模型主键的值，使用内置的hash方法生成哈希值。如果实例还未保存，没有主键值，显然会发生错误。哈希值一旦生成就不允许修改。
+
+提醒
+不要使用clean、save、delete等Django内置的模型API名字，防止命名冲突
+
+字段命名约束：
+
+Django不允许下面两种字段名：
+
+与Python关键字冲突。这会导致语法错误。例如：
+class Example(models.Model):
+    pass = models.IntegerField() # 'pass'是Python保留字！ 
+字段名中不能有两个以上下划线在一起，因为两个下划线是Django的查询语法。例如：
+class Example(models.Model):
+    foo__bar = models.IntegerField() # 'foo__bar' 有两个下划线在一起!
+字段名不能以下划线结尾，原因同上。
+
+
+https://www.liujiangblog.com/course/django/95

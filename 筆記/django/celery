@@ -1,0 +1,24 @@
+
+Celery 是一個用於分散式任務隊列的 Python 庫。它可以幫助開發人員在應用程式中執行耗時的任務，並允許這些任務在多個處理單元（如多個機器、多個執行緒或多個處理器）之間異步執行。以下是一些關於 Celery 的基本概念：
+
+任務（Task）：在 Celery 中，任務是一個獨立的工作單元，它執行特定的操作。開發人員可以定義不同的任務，並將其提交到 Celery 隊列中進行處理。
+
+佇列（Queue）：Celery 使用佇列來存儲待處理的任務。當一個任務被提交到佇列中，Celery 將根據設定的優先級和調度策略進行處理。
+
+工作節點（Worker）：工作節點是執行 Celery 任務的實際處理單元。你可以設置多個工作節點，以實現分散式的任務處理。
+
+結果（Result）：當一個任務完成後，Celery 可以將結果返回給提交該任務的地方。開發人員可以根據需要獲取和處理這些結果。
+
+設定（Configuration）：Celery 提供了多種配置選項，可以用於調整和配置 Celery 的行為。這些配置可以包括佇列的位置、任務的優先級、任務的超時等。
+
+
+; 配置文件命名
+; celeryconfig.py
+broker_url= 'amqp://guest:guest@192.168.90.149:5672//'
+backend_url= 'redis://192.168.90.149:6378/0'
+broker_connection_retry_on_startup = True
+
+
+# broker是獲取任務的地方
+# backend是返回運算結果的地方
+; 如果你希望保留現有行為以在啟動時重試連接，應將 broker_connection_retry_on_startup 設為 True。
