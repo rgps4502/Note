@@ -1,0 +1,56 @@
+安装openssl 1.1.1
+# YUM 方法
+yum install gcc zlib-devel bzip2 bzip2-devel readline readline-devel openssl openssl-devel libffi-devel
+yum install epel-release
+yum install openssl11 openssl11-devel
+export CFLAGS="$(pkg-config --cflags openssl11)"
+export LDFLAGS="$(pkg-config --libs openssl11)"
+ldconfig
+cat <<\EOF >>~/.bashrc
+export CFLAGS="-I/usr/include/openssl11 $CFLAGS"
+export LDFLAGS="-L/usr/lib64/openssl11 -lssl -lcrypto $LDFLAGS"
+EOF
+
+#手動安裝方法
+wget https://gh.bagunai.com/www.openssl.org/source/openssl-1.1.1k.tar.gz
+tar -zxvf openssl-1.1.1k.tar.gz
+cd openssl-1.1.1k
+mkdir -p /usr/local/openssl
+./config --prefix=/usr/local/openssl
+make && make install
+\mv /usr/bin/openssl /usr/bin/openssl.old
+\mv /usr/include/openssl/ /usr/include/openssl.old
+ln -s /usr/local/openssl/bin/openssl /usr/bin/openssl
+ln -s /usr/local/openssl/include/openssl/ /usr/include/openssl
+echo "/usr/local/openssl/lib/">>/etc/ld.so.conf
+ldconfig
+openssl version -a
+
+
+#Python 環境
+# 安裝基本環境
+su root
+ 
+yum install -y make patch sqlite whois vim telnet gcc gcc-c++ # Uwsgi
+yum install -y zlib-devel bzip2-devel openssl-devel ncurses-devel sqlite-devel readline-devel tk-devel gdbm-devel db4-devel libpcap-devel xz-devel libffi-devel mysql-devel # mysql
+
+# 安裝 pyenv 虛擬環境
+# 外網安裝:
+# curl -L https://github.com/pyenv/pyenv-installer/raw/master/bin/pyenv-installer | bash
+
+exec $SHELL
+ 
+# 配置
+sed -Ei -e '/^([^#]|$)/ {a \
+export PYENV_ROOT="$HOME/.pyenv"
+a \
+export PATH="$PYENV_ROOT/bin:$PATH"
+a \
+' -e ':a' -e '$!{n;ba};}' ~/.bashrc
+echo 'eval "$(pyenv init --path)"' >> ~/.bash_profile
+ 
+echo 'eval "$(pyenv init -)"' >> ~/.bashrc
+echo 'eval "$(pyenv virtualenv-init -)"' >> ~/.bashrc
+ 
+# 刷新
+source ~/.bashrc
